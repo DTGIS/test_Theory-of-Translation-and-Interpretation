@@ -453,7 +453,7 @@
 // =========================================================================
 // 1. CONFIGURATION
 // =========================================================================
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzSTpS0MZZSG31Q9hDUpBrRaK4kP_rFK0P3HIf_hd4a87Y_hZnbkoyKDVIq6WjpAH5xAQ/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQdpwhvyUVAj-CzpS0uC3EKAIJJ1uAuGQsnzCgcCx1nVtn7EDp-y1NPpMvY3kEjl7-cg/exec";
 const EXAM_DURATION_SECONDS = 60 * 60;
 const COOLDOWN_HOURS = 3;
 
@@ -1065,6 +1065,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     try {
       const res = await fetch(SCRIPT_URL, {
         method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify({
           action: "login",
           mshv: mshvVal,
