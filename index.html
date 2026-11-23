@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ITEST - ENG1373: Theory of Translation and Interpretation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; user-select: none; -webkit-user-select: none; }
+    .itest-header { background: linear-gradient(90deg, #0f294a 0%, #1d4ed8 100%); }
+    .q-btn { transition: all 0.15s ease; }
+    .q-btn.answered { background-color: #2563eb; color: #fff; border-color: #1d4ed8; }
+    .q-btn.flagged { border: 2px solid #f59e0b; position: relative; }
+    .q-btn.flagged::after { content: ''; position: absolute; top: -3px; right: -3px; width: 8px; height: 8px; background: #f59e0b; border-radius: 50%; }
+    .q-btn.active { ring: 2px; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35); transform: scale(1.05); }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- ================= SCREEN 1: ĐĂNG NHẬP VÀO PHÒNG THI ================= -->
+  <div id="login-screen" class="flex-1 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-lg w-full overflow-hidden">
+      <div class="itest-header p-6 text-white text-center">
+        <div class="inline-block bg-white/15 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase mb-2">
+          Hệ thống Khảo thí Trực tuyến ITEST
+        </div>
+        <h1 class="text-xl font-bold leading-snug">ENG1373: THEORY OF TRANSLATION AND INTERPRETATION</h1>
+        <p class="text-blue-100 text-sm mt-1">Đề thi trắc nghiệm tổng hợp (Session 1 – Session 6)</p>
+      </div>
+
+      <div class="p-6 space-y-5">
+        <!-- Quy chế thi -->
+        <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg text-sm text-amber-900 space-y-1.5">
+          <p class="font-bold flex items-center gap-1.5">⚠️ QUY CHẾ PHÒNG THI NGHIÊM NGẶT:</p>
+          <ul class="list-disc pl-5 space-y-1 text-xs leading-relaxed">
+            <li>Số lượng: <strong>50 câu hỏi trắc nghiệm</strong> (4 lựa chọn A, B, C, D) – Thời gian: <strong>60 phút</strong>.</li>
+            <li>Mỗi <strong>MSHV</strong> chỉ được dự thi <strong>1 lần</strong>; sau <strong>3 tiếng</strong> mới được phép truy cập lại lần 2.</li>
+            <li><strong>CẤM CHUYỂN APP / CHUYỂN TAB / THU NHỎ MÀN HÌNH:</strong> Nếu rời khỏi màn hình thi hoặc nhấn phím thoát, hệ thống sẽ <strong>TỰ ĐỘNG NỘP BÀI NGAY LẬP TỨC</strong>.</li>
+          </ul>
+        </div>
+
+        <form id="login-form" class="space-y-4">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Họ và tên học viên <span class="text-red-500">*</span></label>
+            <input type="text" id="input-name" required placeholder="Ví dụ: Nguyễn Văn A"
+              class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none font-medium" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">Mã số học viên (MSHV) <span class="text-red-500">*</span></label>
+            <input type="text" id="input-mshv" required placeholder="Nhập chính xác MSHV của bạn"
+              class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none uppercase font-semibold tracking-wide" />
+          </div>
+
+          <div id="login-error" class="hidden bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded-lg text-sm font-medium"></div>
+
+          <button type="submit" id="btn-start"
+            class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-lg shadow-md transition flex items-center justify-center gap-2">
+            <span>BẮT ĐẦU LÀM BÀI THI</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SCREEN 2: GIAO DIỆN LÀM BÀI THI ITEST ================= -->
+  <div id="exam-screen" class="hidden flex-1 flex flex-col h-screen overflow-hidden">
+    <!-- Top Bar -->
+    <header class="itest-header text-white px-4 py-3 shadow-md flex flex-wrap items-center justify-between gap-3 shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="bg-white text-blue-900 font-extrabold px-2.5 py-1 rounded text-sm tracking-tight">ITEST</div>
+        <div>
+          <h2 class="font-bold text-sm md:text-base leading-tight">ENG1373 – Theory of Translation & Interpretation</h2>
+          <p class="text-xs text-blue-200">Thí sinh: <span id="hud-name" class="font-semibold text-white"></span> | MSHV: <span id="hud-mshv" class="font-semibold text-white"></span></p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="bg-slate-900/50 border border-white/20 px-4 py-1.5 rounded-lg flex items-center gap-2">
+          <span class="text-xs text-blue-200 uppercase font-medium">Thời gian còn lại:</span>
+          <span id="timer-display" class="font-mono text-lg md:text-xl font-bold text-amber-300">60:00</span>
+        </div>
+        <button onclick="confirmManualSubmit()"
+          class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-lg text-sm shadow transition">
+          NỘP BÀI
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Body -->
+    <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+      <!-- Cột trái: Nội dung câu hỏi -->
+      <main class="flex-1 overflow-y-auto p-4 md:p-8">
+        <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-5">
+            <span class="bg-blue-50 text-blue-800 border border-blue-200 px-3 py-1 rounded-md text-sm font-bold">
+              Câu hỏi <span id="q-number">1</span> / 50
+            </span>
+            <button id="btn-flag" onclick="toggleFlag()"
+              class="text-xs font-semibold px-3 py-1.5 rounded-md border border-slate-300 text-slate-600 hover:bg-amber-50 hover:text-amber-700 hover:border-amber-400 transition">
+              🚩 Đánh dấu xem lại
+            </button>
+          </div>
+
+          <div id="q-text" class="text-base md:text-lg font-semibold text-slate-900 leading-relaxed mb-6"></div>
+
+          <div id="q-options" class="space-y-3"></div>
+
+          <!-- Điều hướng câu trước / sau -->
+          <div class="flex items-center justify-between mt-8 pt-5 border-t border-slate-100">
+            <button id="btn-prev" onclick="navigateQuestion(-1)"
+              class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 disabled:opacity-40">
+              ← Câu trước
+            </button>
+            <button id="btn-next" onclick="navigateQuestion(1)"
+              class="px-5 py-2 rounded-lg bg-blue-700 text-white font-semibold text-sm hover:bg-blue-800 disabled:opacity-40">
+              Câu tiếp theo →
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <!-- Cột phải: Bảng điều hướng 50 câu (ITEST Navigator) -->
+      <aside class="w-full md:w-80 bg-white border-t md:border-t-0 md:border-l border-slate-200 p-4 flex flex-col shrink-0">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-bold text-sm text-slate-800 uppercase tracking-wide">Danh sách câu hỏi</h3>
+          <span class="text-xs font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">
+            Đã làm: <span id="answered-count">0</span>/50
+          </span>
+        </div>
+
+        <div id="question-grid" class="grid grid-cols-10 md:grid-cols-5 gap-2 overflow-y-auto pr-1 max-h-44 md:max-h-none flex-1"></div>
+
+        <div class="mt-4 pt-3 border-t border-slate-200 grid grid-cols-3 gap-2 text-[11px] text-slate-600">
+          <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-blue-600 inline-block"></span> Đã chọn</div>
+          <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded border border-slate-300 inline-block"></span> Chưa làm</div>
+          <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded border-2 border-amber-500 inline-block"></span> Xem lại</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ================= SCREEN 3: KẾT QUẢ BÀI THI ================= -->
+  <div id="result-screen" class="hidden flex-1 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-lg w-full overflow-hidden">
+      <div class="itest-header p-6 text-white text-center">
+        <h2 class="text-xl font-bold">KẾT QUẢ BÀI THI TRẮC NGHIỆM</h2>
+        <p class="text-blue-200 text-xs mt-1">ENG1373 – Theory of Translation & Interpretation</p>
+      </div>
+
+      <div class="p-6 space-y-5">
+        <div id="submit-status-banner" class="p-3 rounded-lg text-sm font-semibold text-center"></div>
+
+        <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 space-y-2 text-sm">
+          <div class="flex justify-between"><span class="text-slate-500">Họ và tên:</span><span id="res-name" class="font-bold text-slate-900"></span></div>
+          <div class="flex justify-between"><span class="text-slate-500">Mã số học viên:</span><span id="res-mshv" class="font-bold text-slate-900"></span></div>
+          <div class="flex justify-between"><span class="text-slate-500">Thời gian nộp:</span><span id="res-time" class="font-medium text-slate-700"></span></div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 text-center">
+          <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3">
+            <div class="text-2xl font-extrabold text-emerald-700" id="res-correct">0</div>
+            <div class="text-xs font-semibold text-emerald-800 mt-0.5">Số câu đúng</div>
+          </div>
+          <div class="bg-rose-50 border border-rose-200 rounded-xl p-3">
+            <div class="text-2xl font-extrabold text-rose-700" id="res-wrong">0</div>
+            <div class="text-xs font-semibold text-rose-800 mt-0.5">Số câu sai</div>
+          </div>
+          <div class="bg-blue-50 border border-blue-200 rounded-xl p-3">
+            <div class="text-2xl font-extrabold text-blue-700" id="res-score">0.0</div>
+            <div class="text-xs font-semibold text-blue-800 mt-0.5">Điểm (Hệ 10)</div>
+          </div>
+        </div>
+
+        <p id="sync-note" class="text-center text-xs text-slate-500 italic">Đang đồng bộ kết quả về Google Sheets...</p>
+      </div>
+    </div>
+  </div>
+
+<script>
+// =========================================================================
+// 1. CẤU HÌNH GOOGLE APPS SCRIPT WEB APP URL (DÁN LINK CỦA BẠN VÀO ĐÂY)
+// =========================================================================
+const SCRIPT_URL = "DÁN_URL_WEB_APP_GOOGLE_APPS_SCRIPT_CỦA_BẠN_VÀO_ĐÂY";
+const EXAM_DURATION_SECONDS = 60 * 60; // 60 phút
+const COOLDOWN_HOURS = 3;
+
+// =========================================================================
+// 2. NGÂN HÀNG 50 CÂU HỎI BÁM SÁT GIÁO TRÌNH ENG1373 (SESSION 1 -> SESSION 6)
+// =========================================================================
+const QUESTION_BANK = [
+  // --- SESSION 1: INTRODUCTION & THEORY OF TRANSLATION ---
+  {
+    q: "According to the coursebook, how is 'translation' defined?",
+    options: [
+      "Rendering a written text into another language in the way that the author intended the text.",
+      "Rendering spoken information and ideas orally from one language into another.",
+      "Summarizing the main points of a foreign document for a local audience.",
+      "Rewriting a literary work freely to match the target culture's traditions."
+    ],
+    answer: 0
+  },
+  {
+    q: "Approximately how many languages can the best polyglot in the world speak, according to Section 1.2?",
+    options: ["About 10 languages", "About 25 languages", "About 50 languages", "About 100 languages"],
+    answer: 1
+  },
+  {
+    q: "Where and when was the first trace of translation found?",
+    options: [
+      "300 B.C. in Ancient Greece",
+      "3000 B.C. during the Egyptian Old Kingdom at Elephantine",
+      "1522 A.D. in Germany with Luther's Bible translation",
+      "19th century in France for diplomatic treaties"
+    ],
+    answer: 1
+  },
+  {
+    q: "Which historical translation in 1522 laid the foundations of modern German?",
+    options: [
+      "The Rosetta Stone inscription",
+      "Erasmus's Greek New Testament",
+      "Luther's Bible translation",
+      "King James Authorized Version"
+    ],
+    answer: 2
+  },
+  {
+    q: "Which century has been called the 'age of translation and interpreting'?",
+    options: ["The 18th century", "The 19th century", "The 20th century", "The 21st century"],
+    answer: 2
+  },
+  {
+    q: "In Peter Newmark's 'Dynamics of Translation', how many different directions (forces) pull a text?",
+    options: ["Four directions", "Six directions", "Eight directions", "Ten directions"],
+    answer: 3
+  },
+  {
+    q: "Which translation theory, developed by Catford and Nida, focuses on finding equivalence of meaning, grammar, and content?",
+    options: [
+      "Functionalist Theories of Translation",
+      "Linguistic Theory of Translation",
+      "Manipulation School of Translation",
+      "Deconstructionist Theories"
+    ],
+    answer: 1
+  },
+  {
+    q: "Which translation theory is emphasized in the coursebook as the most suitable for undergraduate students?",
+    options: [
+      "Deconstructionist Theories by Edwin Gentzler",
+      "Manipulation School by Susan Bassnett",
+      "Culture and Context Theories by Peter Newmark",
+      "Skopos Functionalist Theory by Vermeer"
+    ],
+    answer: 2
+  },
+  {
+    q: "What are the two purposes of reading the original text before translating (Pre-translation considerations)?",
+    options: [
+      "To count the total words and estimate the translation fee",
+      "To understand what it is about (general & close reading) and analyze it from a translator's point of view",
+      "To memorize the source text and rewrite it without looking back",
+      "To identify spelling errors and rewrite the author's arguments"
+    ],
+    answer: 1
+  },
+  {
+    q: "Following Nida, which text style is static and places emphasis on linking verbs, adjectives, and adjectival nouns?",
+    options: ["Narrative", "Description", "Discussion", "Dialogue"],
+    answer: 1
+  },
+  {
+    q: "Which of Nida's four text styles emphasizes abstract nouns (concepts), verbs of thought ('consider', 'argue'), and logical connectives?",
+    options: ["Narrative", "Description", "Discussion", "Dialogue"],
+    answer: 2
+  },
+  {
+    q: "How should a translator handle a badly written source text cluttered with stereotyped phrases and poor structure?",
+    options: [
+      "Preserve every mistake faithfully to reflect the author's poor writing",
+      "Refuse to translate the text entirely",
+      "Correct the text during translation",
+      "Translate it word-for-word without editing"
+    ],
+    answer: 2
+  },
+
+  // --- SESSION 2: PROCESS OF TRANSLATING & TRANSLATION METHODS ---
+  {
+    q: "What is the main danger of the first approach to translating (translating sentence by sentence immediately to get the feel of the text)?",
+    options: [
+      "It is overly mechanical and ignores the author's tone.",
+      "It may leave too much revision on the early part and is therefore time-wasting.",
+      "It cannot be applied to any literary texts.",
+      "It prevents the translator from using a dictionary."
+    ],
+    answer: 1
+  },
+  {
+    q: "Which of the following is NOT one of the four levels kept in mind during the translating process?",
+    options: [
+      "The Textual Level",
+      "The Referential Level",
+      "The Cohesive Level",
+      "The Phonological Level"
+    ],
+    answer: 3
+  },
+  {
+    q: "At which level of the translating process does the translator visualize 'What is actually happening here?' and supplement abstract text with factual reality?",
+    options: [
+      "The Textual Level",
+      "The Referential Level",
+      "The Cohesive Level",
+      "The Level of Naturalness"
+    ],
+    answer: 1
+  },
+  {
+    q: "In the Cohesive Level, spotting the difference in mood between 'passed away' and 'died' relates to:",
+    options: [
+      "Syntactic inversion",
+      "Mood moving between positive/emotive and neutral/negative",
+      "Word-for-word equivalence",
+      "Dialectal variation"
+    ],
+    answer: 1
+  },
+  {
+    q: "How does a translator best verify 'The Level of Naturalness'?",
+    options: [
+      "By comparing every single word order against the source text",
+      "By temporarily disengaging from the SL text and reading the translation as though no original existed",
+      "By retaining all source-language idioms literally",
+      "By increasing the length of sentences with formal jargon"
+    ],
+    answer: 1
+  },
+  {
+    q: "What is normally considered the basic unit of thought and the most common unit of translation?",
+    options: ["The morpheme", "The word", "The sentence", "The entire book"],
+    answer: 2
+  },
+  {
+    q: "Which statement accurately describes 'Semantic Translation' compared to 'Communicative Translation'?",
+    options: [
+      "It stresses the reader and the message rather than the author.",
+      "It is smoother, more idiomatic, and often better than its original.",
+      "It stresses meaning and the author, tends to be more idiosyncratic, and is mostly inferior to its original.",
+      "It gives the translator full right to correct mistakes of fact and improve logic."
+    ],
+    answer: 2
+  },
+  {
+    q: "Which text category is best suited for 'Semantic Translation'?",
+    options: [
+      "Journalism and public notices",
+      "Textbooks and scientific reports",
+      "High literature, drama (e.g., Shakespeare), and autobiographies",
+      "Propaganda and commercial publicity"
+    ],
+    answer: 2
+  },
+  {
+    q: "Which translation method is considered the 'freest' form of translation, used mainly for plays and poetry where the SL culture is converted to the TL culture?",
+    options: [
+      "Faithful translation",
+      "Literal translation",
+      "Adaptation",
+      "Word-for-word translation"
+    ],
+    answer: 2
+  },
+  {
+    q: "What is the main characteristic of 'Free translation'?",
+    options: [
+      "It reproduces the matter without the manner (content without form), often as a much longer paraphrase.",
+      "It preserves the SL word order and translates words singly out of context.",
+      "It transfers cultural words and preserves grammatical abnormality.",
+      "It strictly matches SL idioms with identical TL idioms."
+    ],
+    answer: 0
+  },
+
+  // --- SESSION 3: ABOUT LANGUAGE & STRATEGIES FOR TRANSLATORS ---
+  {
+    q: "What is the term for a native speaker's very personal way of speaking, depending on age, sex, mood, and education?",
+    options: ["Dialect", "Idiolect", "Jargon", "Slang"],
+    answer: 1
+  },
+  {
+    q: "According to the rule of thumb in Section 3.1, when do two dialects become separate languages?",
+    options: [
+      "When they are spoken in two different countries",
+      "When they have different spelling systems",
+      "When they are mutually unintelligible",
+      "When they contain different slang words"
+    ],
+    answer: 2
+  },
+  {
+    q: "A doctor uses the term 'peri-orbital haematoma' instead of 'a black eye' in court. This specialized vocabulary is an example of:",
+    options: ["Idiom", "Slang", "Jargon", "Dialect"],
+    answer: 2
+  },
+  {
+    q: "Translating the English word 'rice' into Vietnamese as 'lúa', 'gạo', or 'cơm' depending on context illustrates which strategy?",
+    options: [
+      "Translation by a more general word",
+      "Translation by a more specific word",
+      "Translation by cultural substitution",
+      "Translation by omission"
+    ],
+    answer: 1
+  },
+  {
+    q: "Translating English 'mopeds, scooters, and motorcycles' all into Vietnamese as 'xe máy' is an example of:",
+    options: [
+      "Translation by a more specific word",
+      "Translation by a more general word",
+      "Translation using a loan word plus explanation",
+      "Translation by paraphrase"
+    ],
+    answer: 1
+  },
+  {
+    q: "Why does the coursebook recommend translating 'ORS' as 'ORS (muối bù mất nước)'?",
+    options: [
+      "To demonstrate translation by cultural substitution",
+      "To use a loan word plus an explanation in parentheses for clarity",
+      "To omit unnecessary medical abbreviations",
+      "To replace an English idiom with a Vietnamese proverb"
+    ],
+    answer: 1
+  },
+  {
+    q: "Translating the English idiom 'to carry coals to Newcastle' as 'chở củi về rừng' in Vietnamese uses which strategy?",
+    options: [
+      "Using an idiom of similar meaning and form",
+      "Using an idiom of similar meaning but dissimilar form",
+      "Translation by paraphrase",
+      "Translation by omission"
+    ],
+    answer: 1
+  },
+  {
+    q: "How did the translator handle the double meaning of the book title 'Being Positive: Living with HIV/AIDS' ('Sống một cách tích cực')?",
+    options: [
+      "By translating both meanings literally into a long sentence",
+      "By omitting one meaning in the main title after clarifying with the commissioner",
+      "By keeping the English title unchanged",
+      "By using a Vietnamese slang expression"
+    ],
+    answer: 1
+  },
+  {
+    q: "In Strategy 3 (Voice), when translating English passive voice into Vietnamese, 'bị' is generally used when the sentence carries:",
+    options: [
+      "A positive or favorable meaning",
+      "A negative or unfavorable meaning",
+      "A neutral scientific definition",
+      "An imperative command"
+    ],
+    answer: 1
+  },
+  {
+    q: "Which of the following Vietnamese sentences contains 'được' or 'bị' but is NOT a passive sentence in English?",
+    options: [
+      "Tom được Mary tặng một món quà.",
+      "Tom bị một kẻ lạ mặt tấn công.",
+      "Anh ấy bị ngã. (He falls.)",
+      "Ngôi nhà này do Frank xây."
+    ],
+    answer: 2
+  },
+  {
+    q: "In Vietnamese plural markers, which word emphasizes the identity of individual members of a category without connoting their totality?",
+    options: ["Các", "Những", "Mỗi", "Tất cả"],
+    answer: 2
+  },
+  {
+    q: "In newspaper headlines (Strategy 6), what does 'To + infinitive' (e.g., 'Oil Price To Rise?') signify?",
+    options: ["Past tense", "Event in progress", "Future events", "Passive voice"],
+    answer: 2
+  },
+
+  // --- SESSION 4: TYPES OF INTERPRETING & INTERPRETING PROCESS ---
+  {
+    q: "What is the key difference between translation and interpreting?",
+    options: [
+      "Translation deals with spoken words; interpreting deals with written texts.",
+      "Translation deals with written texts; interpreting renders spoken words orally.",
+      "Interpreting allows unlimited time for dictionary lookup.",
+      "Translation requires simultaneous delivery without pauses."
+    ],
+    answer: 1
+  },
+  {
+    q: "Which mode of interpreting involves rendering lengthy passages of speech after a speaker has finished speaking?",
+    options: [
+      "Simultaneous interpreting",
+      "Consecutive interpreting",
+      "Sight translation",
+      "Whispered interpretation"
+    ],
+    answer: 1
+  },
+  {
+    q: "Liaison interpreting (dịch hội thoại / dịch tháp tùng) is classified under which mode of interpreting?",
+    options: [
+      "Bilateral consecutive interpreting",
+      "Unilateral simultaneous interpreting",
+      "Electronic booth interpreting",
+      "Written sight translation"
+    ],
+    answer: 0
+  },
+  {
+    q: "Which of the following is a subtype of Simultaneous Interpreting where a written SL text is read aloud directly in the TL?",
+    options: [
+      "Liaison interpreting",
+      "Sight translation",
+      "Consecutive note-taking",
+      "De-briefing"
+    ],
+    answer: 1
+  },
+  {
+    q: "In the Interpreting Process triangle (I - U - D - T - C+C - O1/O2), which stage is considered the MOST important because failure here causes a communication breakdown?",
+    options: [
+      "I (Input)",
+      "U (Understanding)",
+      "D (Deciphering)",
+      "O1 (Output 1)"
+    ],
+    answer: 1
+  },
+  {
+    q: "What happens at the 'Deciphering (D)' stage of the interpreting triangle?",
+    options: [
+      "The interpreter receives the sound waves without interference.",
+      "The interpreter gets rid of all the words, retaining only the concept/idea.",
+      "The interpreter produces an equivalent idiomatic expression.",
+      "The interpreter checks the spelling of proper names."
+    ],
+    answer: 1
+  },
+
+  // --- SESSION 5: HELPFUL SKILLS / ATTRIBUTES FOR INTERPRETING ---
+  {
+    q: "According to Section 5.4, how long are the speech segments that fourth-year students at Hanoi University of Foreign Studies are expected to interpret using short-term memory?",
+    options: [
+      "Up to 15–20 words",
+      "Up to 30 words",
+      "Up to 40–50 words",
+      "Up to 150–200 words"
+    ],
+    answer: 2
+  },
+  {
+    q: "In the 'Newspaper Translation' memory exercise, how long should a student study a 75–100 word article before turning it face down to repeat and translate it?",
+    options: ["About 10 seconds", "About 1 minute", "About 5 minutes", "About 15 minutes"],
+    answer: 1
+  },
+  {
+    q: "What is the primary rule regarding note-taking during consecutive interpreting?",
+    options: [
+      "Write down every single word the speaker says verbatim.",
+      "Rely exclusively on notes rather than short-term memory.",
+      "Notes should act as a backup to memory, capturing pertinent points without distracting from listening.",
+      "Wait until the speaker finishes the entire speech before writing any notes."
+    ],
+    answer: 2
+  },
+  {
+    q: "In standard interpreter note-taking conventions (Section 5.5), how is '25,000' abbreviated to save time?",
+    options: ["25m", "25b", "25k", "25t"],
+    answer: 2
+  },
+
+  // --- SESSION 6: CODE OF ETHICS & INTERPRETING IN SPECIALIZED AREAS ---
+  {
+    q: "According to the Code of Ethics for Interpreters, what must an interpreter do AFTER an interpreting assignment?",
+    options: [
+      "Accept gifts from grateful clients to build goodwill",
+      "Share interesting details of the case with colleagues",
+      "Keep all knowledge and information strictly confidential and not pass it on",
+      "Offer personal legal or medical advice to the client"
+    ],
+    answer: 2
+  },
+  {
+    q: "What is the ideal seating arrangement for on-site liaison interpreting (Section 6.1)?",
+    options: [
+      "The interpreter sits directly between the professional and client, blocking their eye contact.",
+      "A triangle with participants at equal distances from each other so eye contact can be maintained at all times.",
+      "The interpreter stands behind the professional.",
+      "The client and professional sit back-to-back."
+    ],
+    answer: 1
+  },
+  {
+    q: "Which grammatical person should a professional interpreter use during on-site interpreting?",
+    options: [
+      "First-person interpreting ('I')",
+      "Third-person reported speech ('He says that...')",
+      "Passive voice exclusively",
+      "Second-person plural"
+    ],
+    answer: 0
+  },
+  {
+    q: "In Legal Interpreting, what is the interpreter's duty when communication is impeded by a different cultural concept?",
+    options: [
+      "Secretly explain the concept to the client without telling the court",
+      "Ignore the cultural gap and translate word-for-word",
+      "Bring that cultural or language difficulty to the attention of the court, lawyer, or police officer concerned",
+      "Advise the client on how to answer the judge's question"
+    ],
+    answer: 2
+  },
+  {
+    q: "In Business Interpreting (Section 6.2), what is expected regarding the interpreter's attire?",
+    options: [
+      "Casual clothing is preferred to make clients feel relaxed.",
+      "Formal clothes (suit, jacket suit, tie, clean shoes) to match the formal business setting.",
+      "Traditional cultural costumes at all meetings.",
+      "Attire is irrelevant as long as vocabulary is strong."
+    ],
+    answer: 1
+  },
+  {
+    q: "In Medical Interpreting (Section 6.3), why must the interpreter distinguish between a patient giving a 'symptom' and a 'diagnosis'?",
+    options: [
+      "Because the interpreter is responsible for prescribing medicine.",
+      "Because generally a doctor is interested only in the patient's symptoms, not the patient's self-diagnosis.",
+      "Because symptoms should be omitted if they seem embarrassing.",
+      "Because diagnoses do not need to be translated into English."
+    ],
+    answer: 1
+  }
+];
+
+// =========================================================================
+// 3. STATE & LOGIC HỆ THỐNG THI ITEST
+// =========================================================================
+let studentName = "";
+let studentMshv = "";
+let currentIdx = 0;
+let userAnswers = new Array(QUESTION_BANK.length).fill(null);
+let flaggedQuestions = new Array(QUESTION_BANK.length).fill(false);
+let remainingSeconds = EXAM_DURATION_SECONDS;
+let timerInterval = null;
+let isExamActive = false;
+let isSubmitting = false;
+
+// Kiểm tra khóa 3 tiếng lưu tại LocalStorage (kết hợp với check server Google Sheets)
+function checkLocalCooldown(mshv) {
+  const key = `ITEST_ENG1373_LOCK_${mshv}`;
+  const lastTime = localStorage.getItem(key);
+  if (lastTime) {
+    const elapsed = Date.now() - Number(lastTime);
+    const cooldownMs = COOLDOWN_HOURS * 60 * 60 * 1000;
+    if (elapsed < cooldownMs) {
+      const remMins = Math.ceil((cooldownMs - elapsed) / 60000);
+      const h = Math.floor(remMins / 60);
+      const m = remMins % 60;
+      return `MSHV ${mshv} đã hoàn thành bài thi trên thiết bị này. Vui lòng đợi ${h} giờ ${m} phút nữa để thi lại lần 2!`;
+    }
+  }
+  return null;
+}
+
+// Xử lý đăng nhập vào phòng thi
+document.getElementById("login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const nameVal = document.getElementById("input-name").value.trim();
+  const mshvVal = document.getElementById("input-mshv").value.trim().toUpperCase();
+  const errBox = document.getElementById("login-error");
+  const btnStart = document.getElementById("btn-start");
+
+  if (!nameVal || !mshvVal) return;
+
+  errBox.classList.add("hidden");
+  btnStart.disabled = true;
+  btnStart.innerHTML = "⏳ Đang kiểm tra dữ liệu MSHV...";
+
+  // 1. Check nhanh trên trình duyệt
+  const localMsg = checkLocalCooldown(mshvVal);
+  if (localMsg) {
+    errBox.textContent = localMsg;
+    errBox.classList.remove("hidden");
+    btnStart.disabled = false;
+    btnStart.innerHTML = "BẮT ĐẦU LÀM BÀI THI";
+    return;
+  }
+
+  // 2. Check trực tiếp trên Google Sheets (chống đổi máy/ẩn danh)
+  if (SCRIPT_URL.startsWith("https://")) {
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "check", mshv: mshvVal })
+      });
+      const data = await res.json();
+      if (data.allowed === false) {
+        errBox.textContent = data.message;
+        errBox.classList.remove("hidden");
+        btnStart.disabled = false;
+        btnStart.innerHTML = "BẮT ĐẦU LÀM BÀI THI";
+        return;
+      }
+    } catch (err) {
+      console.warn("Không kết nối được server kiểm tra, sử dụng khóa cục bộ:", err);
+    }
+  }
+
+  // Bắt đầu phiên thi
+  studentName = nameVal;
+  studentMshv = mshvVal;
+  startExam();
+});
+
+function startExam() {
+  isExamActive = true;
+  document.getElementById("login-screen").classList.add("hidden");
+  document.getElementById("exam-screen").classList.remove("hidden");
+
+  document.getElementById("hud-name").textContent = studentName;
+  document.getElementById("hud-mshv").textContent = studentMshv;
+
+  // Yêu cầu toàn màn hình (Fullscreen) để hạn chế chuyển app
+  try {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+  } catch (e) {}
+
+  renderGrid();
+  renderQuestion(0);
+  startTimer();
+  activateAntiCheat();
+}
+
+// =========================================================================
+// 4. CƠ CHẾ CHỐNG CHUYỂN APP / RỜI MÀN HÌNH -> TỰ ĐỘNG NỘP BÀI NGAY
+// =========================================================================
+function activateAntiCheat() {
+  // Bắt sự kiện chuyển tab, chuyển app trên điện thoại/máy tính, nhấn Home
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && isExamActive && !isSubmitting) {
+      submitExam("Tự động nộp (Phát hiện chuyển App / chuyển Tab)");
+    }
+  });
+
+  // Bắt sự kiện mất tiêu điểm cửa sổ (Alt+Tab, mở cửa sổ khác, split screen)
+  window.addEventListener("blur", () => {
+    if (isExamActive && !isSubmitting) {
+      submitExam("Tự động nộp (Rời khỏi cửa sổ bài thi)");
+    }
+  });
+
+  // Chặn chuột phải & phím tắt DevTools / Copy
+  document.addEventListener("contextmenu", (e) => isExamActive && e.preventDefault());
+  document.addEventListener("keydown", (e) => {
+    if (!isExamActive) return;
+    if (e.key === "F12" || (e.ctrlKey && ["c", "u", "s", "p"].includes(e.key.toLowerCase()))) {
+      e.preventDefault();
+    }
+  });
+}
+
+// =========================================================================
+// 5. HIỂN THỊ CÂU HỎI & ĐỒNG HỒ ĐẾM NGƯỢC
+// =========================================================================
+function startTimer() {
+  timerInterval = setInterval(() => {
+    remainingSeconds--;
+    const mins = String(Math.floor(remainingSeconds / 60)).padStart(2, "0");
+    const secs = String(remainingSeconds % 60).padStart(2, "0");
+    const display = document.getElementById("timer-display");
+    display.textContent = `${mins}:${secs}`;
+
+    if (remainingSeconds <= 300) {
+      display.classList.remove("text-amber-300");
+      display.classList.add("text-red-400", "animate-pulse");
+    }
+
+    if (remainingSeconds <= 0) {
+      clearInterval(timerInterval);
+      submitExam("Hết giờ làm bài (Tự động nộp)");
+    }
+  }, 1000);
+}
+
+function renderGrid() {
+  const grid = document.getElementById("question-grid");
+  grid.innerHTML = "";
+  QUESTION_BANK.forEach((_, idx) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = idx + 1;
+    btn.id = `nav-btn-${idx}`;
+    btn.className = "q-btn h-9 rounded-lg border border-slate-300 text-xs font-bold flex items-center justify-center bg-white hover:bg-slate-100";
+    btn.onclick = () => renderQuestion(idx);
+    grid.appendChild(btn);
+  });
+}
+
+function updateGridStates() {
+  let answered = 0;
+  QUESTION_BANK.forEach((_, idx) => {
+    const btn = document.getElementById(`nav-btn-${idx}`);
+    btn.classList.remove("answered", "flagged", "active");
+    if (userAnswers[idx] !== null) {
+      btn.classList.add("answered");
+      answered++;
+    }
+    if (flaggedQuestions[idx]) btn.classList.add("flagged");
+    if (idx === currentIdx) btn.classList.add("active");
+  });
+  document.getElementById("answered-count").textContent = answered;
+}
+
+function renderQuestion(idx) {
+  currentIdx = idx;
+  const item = QUESTION_BANK[idx];
+  document.getElementById("q-number").textContent = idx + 1;
+  document.getElementById("q-text").textContent = item.q;
+
+  const flagBtn = document.getElementById("btn-flag");
+  flagBtn.innerHTML = flaggedQuestions[idx] ? "🚩 Đã đánh dấu xem lại" : "🏳️ Đánh dấu xem lại";
+  flagBtn.className = flaggedQuestions[idx]
+    ? "text-xs font-semibold px-3 py-1.5 rounded-md border border-amber-500 bg-amber-50 text-amber-800 transition"
+    : "text-xs font-semibold px-3 py-1.5 rounded-md border border-slate-300 text-slate-600 hover:bg-slate-50 transition";
+
+  const optContainer = document.getElementById("q-options");
+  optContainer.innerHTML = "";
+  const labels = ["A", "B", "C", "D"];
+
+  item.options.forEach((optText, optIdx) => {
+    const isSelected = userAnswers[idx] === optIdx;
+    const label = document.createElement("label");
+    label.className = `flex items-start gap-3.5 p-4 rounded-xl border-2 cursor-pointer transition ${
+      isSelected
+        ? "border-blue-600 bg-blue-50/70 text-blue-950"
+        : "border-slate-200 hover:border-blue-300 hover:bg-slate-50"
+    }`;
+
+    label.innerHTML = `
+      <input type="radio" name="q_opt" class="mt-1 w-4 h-4 text-blue-600 focus:ring-blue-500" ${isSelected ? "checked" : ""} />
+      <span class="font-bold text-sm px-2 py-0.5 rounded ${isSelected ? "bg-blue-600 text-white" : "bg-slate-200 text-slate-700"}">${labels[optIdx]}</span>
+      <span class="text-sm md:text-base leading-snug font-medium flex-1">${optText}</span>
+    `;
+
+    label.onclick = () => {
+      userAnswers[idx] = optIdx;
+      renderQuestion(idx);
+    };
+    optContainer.appendChild(label);
+  });
+
+  document.getElementById("btn-prev").disabled = idx === 0;
+  document.getElementById("btn-next").disabled = idx === QUESTION_BANK.length - 1;
+  updateGridStates();
+}
+
+function navigateQuestion(delta) {
+  const next = currentIdx + delta;
+  if (next >= 0 && next < QUESTION_BANK.length) {
+    renderQuestion(next);
+  }
+}
+
+function toggleFlag() {
+  flaggedQuestions[currentIdx] = !flaggedQuestions[currentIdx];
+  renderQuestion(currentIdx);
+}
+
+function confirmManualSubmit() {
+  const unanswered = userAnswers.filter((a) => a === null).length;
+  // Tạm tắt blur check trong lúc hộp thoại confirm bật lên
+  isExamActive = false;
+  const ok = confirm(
+    unanswered > 0
+      ? `Bạn còn ${unanswered} câu chưa chọn đáp án. Bạn có chắc chắn muốn NỘP BÀI ngay bây giờ không?`
+      : "Bạn đã hoàn thành tất cả 50 câu hỏi. Xác nhận NỘP BÀI?"
+  );
+  if (ok) {
+    submitExam("Nộp bài chủ động");
+  } else {
+    isExamActive = true;
+  }
+}
+
+// =========================================================================
+// 6. CHẤM ĐIỂM THANG 10 & GỬI DỮ LIỆU VỀ GOOGLE SHEETS
+// =========================================================================
+async function submitExam(statusReason) {
+  if (isSubmitting) return;
+  isSubmitting = true;
+  isExamActive = false;
+  clearInterval(timerInterval);
+
+  if (document.fullscreenElement) {
+    document.exitFullscreen().catch(() => {});
+  }
+
+  // Tính số câu đúng / sai / điểm hệ 10
+  let correctCount = 0;
+  QUESTION_BANK.forEach((item, idx) => {
+    if (userAnswers[idx] === item.answer) correctCount++;
+  });
+  const wrongCount = QUESTION_BANK.length - correctCount;
+  const score10 = ((correctCount / QUESTION_BANK.length) * 10).toFixed(2);
+
+  // Khóa MSHV trong 3 tiếng trên trình duyệt
+  localStorage.setItem(`ITEST_ENG1373_LOCK_${studentMshv}`, String(Date.now()));
+
+  // Hiển thị màn hình kết quả
+  document.getElementById("exam-screen").classList.add("hidden");
+  document.getElementById("result-screen").classList.remove("hidden");
+
+  const banner = document.getElementById("submit-status-banner");
+  if (statusReason.includes("Phát hiện") || statusReason.includes("Rời khỏi")) {
+    banner.className = "p-3 rounded-lg text-sm font-bold text-center bg-red-100 text-red-800 border border-red-300";
+    banner.textContent = `⚠️ ${statusReason}`;
+  } else {
+    banner.className = "p-3 rounded-lg text-sm font-bold text-center bg-emerald-100 text-emerald-800 border border-emerald-300";
+    banner.textContent = `✅ ${statusReason}`;
+  }
+
+  document.getElementById("res-name").textContent = studentName;
+  document.getElementById("res-mshv").textContent = studentMshv;
+  document.getElementById("res-time").textContent = new Date().toLocaleString("vi-VN");
+  document.getElementById("res-correct").textContent = `${correctCount}/50`;
+  document.getElementById("res-wrong").textContent = `${wrongCount}/50`;
+  document.getElementById("res-score").textContent = score10;
+
+  // Gửi kết quả về Google Sheets
+  const syncNote = document.getElementById("sync-note");
+  if (SCRIPT_URL.startsWith("https://")) {
+    try {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({
+          action: "submit",
+          mshv: studentMshv,
+          fullName: studentName,
+          correct: correctCount,
+          wrong: wrongCount,
+          score: score10,
+          status: statusReason
+        })
+      });
+      syncNote.textContent = "✔️ Kết quả đã được ghi nhận thành công lên hệ thống Google Sheets!";
+      syncNote.classList.replace("text-slate-500", "text-emerald-700");
+    } catch (err) {
+      syncNote.textContent = "⚠️ Lỗi mạng khi đồng bộ Google Sheets, vui lòng chụp màn hình kết quả này để đối chiếu.";
+      syncNote.classList.replace("text-slate-500", "text-red-600");
+    }
+  } else {
+    syncNote.textContent = "ℹ️ Chưa cấu hình URL Google Apps Script (đang chạy chế độ xem trước).";
+  }
+}
+</script>
+</body>
+</html>
