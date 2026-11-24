@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>ITEST Portal | ENG1373 - Final Examination</title>
+  <title>ITEST Portal | ENG1373 - Midterm Examination</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -351,7 +351,7 @@
       <div class="badge-itest">ITEST</div>
       <div>
         <div class="course-title">ENG1373: Theory of Translation and Interpretation</div>
-        <div class="course-sub">Final Course Examination</div>
+        <div class="course-sub">Midterm Examination</div>
       </div>
     </div>
     <div id="hud-candidate" class="course-sub hidden">
@@ -362,7 +362,7 @@
   <!-- 1. LOGIN SCREEN -->
   <div id="login-screen" class="login-wrapper">
     <div class="login-header">
-      <h2>Final Examination Login</h2>
+      <h2>Midterm Examination Login</h2>
       <p>Enter your full name and Student ID to begin the test.</p>
     </div>
     <div class="login-body">
@@ -386,7 +386,7 @@
           <label for="input-mshv">Student ID *</label>
           <input type="text" id="input-mshv" class="form-control uppercase" required placeholder="Enter your Student ID" autocomplete="off" />
         </div>
-        <button type="submit" id="btn-start" class="btn-primary">Start Final Exam</button>
+        <button type="submit" id="btn-start" class="btn-primary">Start Midterm Exam</button>
       </form>
     </div>
   </div>
@@ -467,92 +467,102 @@ function getDeviceToken() {
 }
 
 // =========================================================================
-// 2. UNIVERSITY-LEVEL QUESTION BANK (50 QUESTIONS - SESSIONS 1 TO 6)
+// 2. MIDTERM QUESTION BANK (50 QUESTIONS - VB2 BUSINESS & OFFICE ENGLISH)
 // =========================================================================
 const RAW_QUESTION_BANK = [
-  // --- SESSION 1: FOUNDATIONS, DYNAMICS & TEXT TYPOLOGY ---
+  // --- PART 1: BASIC CONCEPTS OF TRANSLATION & INTERPRETING ---
   {
-    q: "Why does the coursebook argue that foreign language acquisition alone cannot solve global communication barriers?",
+    q: "What is the primary medium used in 'translation'?",
     options: [
-      "Even the most accomplished polyglots can master only around twenty-five languages out of thousands spoken worldwide.",
-      "Written scripts across different continents cannot be learned by non-native adults.",
-      "Diplomatic protocols legally forbid negotiators from speaking a second language.",
-      "Linguistic structures change every decade, rendering language learning obsolete."
+      "The written word (rendering written texts from one language into another)",
+      "The spoken word (rendering oral speech immediately in real time)",
+      "Sign language and visual gestures",
+      "Audio recordings without written transcripts"
     ],
     answer: 0
   },
   {
-    q: "In Peter Newmark's 'Dynamics of Translation', what does the translator's 'group loyalty factor' refer to?",
+    q: "What is the primary medium used in 'interpreting'?",
     options: [
-      "Personal, social, cultural, national, or political assumptions and prejudices that pull the text toward the translator's own bias.",
-      "The translator's strict adherence to the grammatical rules of the source language.",
-      "The financial obligation between the translation commissioner and the translation agency.",
-      "The shared terminology agreed upon by a team of technical editors."
+      "The spoken word (conveying information orally from one language into another)",
+      "The written word (translating books and legal contracts)",
+      "Subtitling pre-recorded video clips",
+      "Proofreading bilingual dictionaries"
     ],
     answer: 0
   },
   {
-    q: "When considering the 'expectations of the putative readership', Newmark advises translators to aim at the 'largest common factor', which means:",
+    q: "In translation terminology, what does 'SL' stand for?",
     options: [
-      "Neither translating down (oversimplifying) nor translating up (over-complicating) relative to the target audience's knowledge.",
-      "Always rewriting specialized texts so that elementary school children can read them.",
-      "Using archaic and highly academic vocabulary regardless of the text genre.",
-      "Retaining untranslated source terms so readers are forced to consult reference books."
+      "Source Language (the original language of the text)",
+      "Second Language (any foreign language learned at school)",
+      "Standard Language (formal academic writing)",
+      "Spoken Language (informal daily conversation)"
     ],
     answer: 0
   },
   {
-    q: "How do Functionalist Theories of Translation (German school: Reiss, Vermeer, Nord) differ fundamentally from Linguistic Theories (Catford, Nida)?",
+    q: "In translation terminology, what does 'TL' stand for?",
     options: [
-      "Functionalist theories prioritize the intended purpose and function of the target text over strict equivalence to the source text.",
-      "Functionalist theories insist on word-for-word syntactic mirroring between source and target languages.",
-      "Functionalist theories apply exclusively to poetry and religious scripture.",
-      "Functionalist theories reject the involvement of a target readership."
+      "Target Language (the language into which a text is translated)",
+      "Technical Language (specialized business vocabulary)",
+      "Theoretical Linguistics (the scientific study of grammar)",
+      "Translated Literature (foreign novels)"
     ],
     answer: 0
   },
   {
-    q: "Which theoretical school views translation as a 'second original' and largely disregards the authority of the source text?",
+    q: "Why are professional translators and interpreters essential despite global language education?",
     options: [
-      "Deconstructionist Theories (Edwin Gentzler)",
-      "Linguistic Equivalence Theory (J.C. Catford)",
-      "Culture and Context Theory (Peter Newmark)",
-      "Textual Cohesion Theory (Halliday & Hasan)"
+      "No single person can master all the thousands of languages used across the world.",
+      "Foreign language dictionaries are no longer published.",
+      "International organizations only accept handwritten documents.",
+      "Most countries prohibit citizens from learning second languages."
     ],
     answer: 0
   },
   {
-    q: "During pre-translation analysis, what is the primary distinction between 'general reading' and 'close reading'?",
+    q: "Which century is known in the coursebook as the 'age of translation and interpreting'?",
     options: [
-      "General reading grasps the overall gist, whereas close reading examines individual words both in and out of context in challenging passages.",
-      "General reading checks typographical errors, whereas close reading counts syllable stress.",
-      "General reading is done after translation, whereas close reading is done by the proofreader.",
-      "General reading applies only to fiction, whereas close reading applies only to legal contracts."
+      "The 20th century",
+      "The 15th century",
+      "The 17th century",
+      "The 18th century"
     ],
     answer: 0
   },
   {
-    q: "Two news articles report the exact same casualty figures of a protest, yet one uses passive constructions and impersonal verbs to disclaim responsibility. Which pre-translation factor does this illustrate?",
+    q: "Which translation theory by Peter Newmark focuses on culture and context, and is recommended as most suitable for undergraduate students?",
     options: [
-      "The intention of the text (the SL writer's attitude toward the subject matter)",
-      "The typographic format of the periodical",
-      "The phonological rhythm of the source language",
-      "The translator's chronological translation speed"
+      "Culture and Context Theories",
+      "Deconstructionist Theories",
+      "Manipulation School",
+      "Mathematical Equivalence Theory"
     ],
     answer: 0
   },
   {
-    q: "When might a translator's intention legitimately diverge from the source author's original intention?",
+    q: "What are the two main purposes of reading the source text before translating?",
     options: [
-      "When translating a foreign advertisement or manual merely to show a client how such texts are structured in the SL rather than to persuade TL consumers.",
-      "When the translator disagrees politically with the author's main argument in an academic paper.",
-      "When translating a sworn witness statement for an international court proceeding.",
-      "When localizing a medical dosage chart for hospital nurses."
+      "To understand what the text is about and to analyze it from a translator's point of view",
+      "To count the total pages and calculate the printing cost",
+      "To memorize the whole passage and rewrite it from memory",
+      "To change the author's main opinion to suit local politics"
     ],
     answer: 0
   },
   {
-    q: "A passage relies heavily on 'dummy' or 'empty' verbs paired with verb-nouns and phrasal verbs to depict a dynamic sequence of events. Under Nida's classification, this text style is:",
+    q: "What is 'general reading' in pre-translation analysis?",
+    options: [
+      "Reading the text quickly to grasp the overall gist or main idea",
+      "Looking up every single word in an etymological dictionary",
+      "Checking the font size and page margins of the document",
+      "Reading the translation aloud to an audience"
+    ],
+    answer: 0
+  },
+  {
+    q: "Following Nida's classification, which text style tells a dynamic sequence of events with emphasis on verbs?",
     options: [
       "Narrative",
       "Description",
@@ -562,268 +572,748 @@ const RAW_QUESTION_BANK = [
     answer: 0
   },
   {
-    q: "Which linguistic features characterize Nida's 'Discussion' text type?",
+    q: "Which text style is static and emphasizes linking verbs, adjectives, and adjectival nouns?",
     options: [
-      "Abstract conceptual nouns, verbs of mental activity ('consider', 'argue'), and logical connectives.",
-      "Static linking verbs, sensory adjectives, and spatial prepositions.",
-      "Colloquialisms, phatic expressions, and conversational fillers.",
-      "Imperative commands and bulleted procedural steps."
+      "Description",
+      "Narrative",
+      "Dialogue",
+      "Argumentation"
     ],
     answer: 0
   },
   {
-    q: "How should a translator treat syntax when translating a well-written, authoritative source text?",
+    q: "Which text style emphasizes colloquialisms and conversational exchanges between speakers?",
     options: [
-      "Preserve its stylistic nuances, recognizing that complex syntax reflects subtlety while plain syntax reflects simplicity.",
-      "Simplify all complex sentences into short subject-verb-object clauses for faster reading.",
-      "Normalize the author's personal style into standard journalistic prose.",
-      "Add explanatory adjectives to enrich plain sentences."
+      "Dialogue",
+      "Description",
+      "Discussion",
+      "Technical report"
     ],
     answer: 0
   },
   {
-    q: "Conversely, if a source text is poorly written—cluttered with stereotyped phrases and faulty structure—what is the translator's responsibility?",
+    q: "What is normally considered the most common basic unit of translation?",
     options: [
-      "Improve and correct the poorly structured writing in the target version.",
-      "Reproduce the awkwardness and structural flaws verbatim in the target language.",
-      "Insert footnotes criticizing the original writer's competence.",
-      "Leave the confusing paragraphs untranslated."
-    ],
-    answer: 0
-  },
-
-  // --- SESSION 2: TRANSLATION PROCESS, FOUR LEVELS & METHODS ---
-  {
-    q: "Compare the two approaches to starting a translation: translating sentence-by-sentence immediately versus reading the entire text two or three times first. Why is the second approach generally preferred?",
-    options: [
-      "It establishes intention, register, and tone upfront, avoiding heavy, time-wasting revisions on earlier sections.",
-      "It eliminates the need to consult specialized dictionaries during drafting.",
-      "It allows the translator to skip difficult paragraphs without losing coherence.",
-      "It guarantees a word-for-word match with the source syntax."
+      "The sentence",
+      "The single letter",
+      "The syllable",
+      "The entire book"
     ],
     answer: 0
   },
   {
-    q: "In the translating process, what role does 'The Textual Level' play?",
+    q: "If a source text is badly written with poor structure and redundant phrases, what should the translator do?",
     options: [
-      "It serves as the base level of literal transposition where 'translationese' must be eliminated, while acting as a check against excessive paraphrase.",
-      "It evaluates whether the translated typography matches the publisher's layout.",
-      "It verifies the historical accuracy of dates and statistical figures.",
-      "It determines the emotional reaction of the target audience."
-    ],
-    answer: 0
-  },
-  {
-    q: "When encountering an abstract or ambiguous passage in a technical document, a translator asks: 'What is actually happening here, and why?' Which level of translating is being activated?",
-    options: [
-      "The Referential Level",
-      "The Cohesive Level",
-      "The Textual Level",
-      "The Syntactic Level"
-    ],
-    answer: 0
-  },
-  {
-    q: "Which two factors govern 'The Cohesive Level' during translation?",
-    options: [
-      "The structural flow of connectives (linking theme to rheme) and the emotional mood (positive/emotive vs. neutral/negative).",
-      "Phonetic alliteration and syllable count per line.",
-      "Bilingual dictionary frequency and etymological origin.",
-      "Font size consistency and paragraph indentation."
-    ],
-    answer: 0
-  },
-  {
-    q: "Choosing between 'passed away' and 'died', or between 'appreciate' and 'evaluate', requires sensitivity to which aspect of the Cohesive Level?",
-    options: [
-      "Mood shifts between emotive/positive and neutral tones",
-      "Transition from known theme to new rheme",
-      "Grammatical tense agreement",
-      "Regional dialectal spelling"
-    ],
-    answer: 0
-  },
-  {
-    q: "What is the most reliable test for verifying 'The Level of Naturalness' in a target text?",
-    options: [
-      "Temporarily disengaging from the SL text and reading the translation as an independent piece of writing in that genre.",
-      "Checking that every SL noun corresponds to a TL noun in the exact same clause position.",
-      "Ensuring no idioms or collocations are used in the target version.",
-      "Back-translating the text word-for-word to verify structural symmetry."
-    ],
-    answer: 0
-  },
-  {
-    q: "Why does Newmark describe translation as an occupation requiring the mind to operate on multiple levels simultaneously?",
-    options: [
-      "Because the textual, referential, cohesive, and naturalness levels constantly interact and frequently conflict with one another.",
-      "Because translators must simultaneously interpret spoken audio while typing.",
-      "Because every sentence must be translated into at least two target dialects.",
-      "Because legal regulations require dual-column formatting."
-    ],
-    answer: 0
-  },
-  {
-    q: "Which of the following features distinguishes 'Communicative Translation' from 'Semantic Translation'?",
-    options: [
-      "It focuses on the reader and the message, is tailor-made for a specific readership, and allows the translator to clarify jargon and remove obscurities.",
-      "It prioritizes the author's exact thought process and preserves every syntactic idiosyncrasy.",
-      "It tends to be more complex, concentrated, and mostly inferior to the original text.",
-      "It prohibits the translator from correcting factual errors in the source text."
-    ],
-    answer: 0
-  },
-  {
-    q: "For which type of text is 'Semantic Translation' obligatory rather than 'Communicative Translation'?",
-    options: [
-      "Personal correspondence, autobiographies, and high literature where the author's individual expression is paramount.",
-      "Public safety notices, tourist brochures, and instruction manuals.",
-      "Commercial advertising copy and press releases.",
-      "Standardized technical specifications and textbooks."
-    ],
-    answer: 0
-  },
-  {
-    q: "How does 'Faithful Translation' differ from 'Literal Translation' on Newmark's V-diagram?",
-    options: [
-      "Faithful translation reproduces precise contextual meaning within TL grammatical constraints and transfers cultural words, whereas literal translation converts SL grammar but translates lexical words singly out of context.",
-      "Faithful translation rewrites the plot for a new culture, whereas literal translation preserves the original plot.",
-      "Faithful translation is a lengthy intralingual paraphrase, whereas literal translation is concise.",
-      "Faithful translation focuses entirely on TL readability, whereas literal translation focuses on SL rhythm."
-    ],
-    answer: 0
-  },
-  {
-    q: "Why does the coursebook note that 'Free Translation' is often criticized as 'not translation at all'?",
-    options: [
-      "Because it reproduces content without form, typically resulting in a much longer paraphrase or intralingual rewrite.",
-      "Because it leaves cultural terms in the source language without explanation.",
-      "Because it preserves source-language word order too rigidly.",
-      "Because it can only be performed by machine translation software."
-    ],
-    answer: 0
-  },
-  {
-    q: "What is the primary risk of 'Idiomatic Translation'?",
-    options: [
-      "It can distort subtle nuances of meaning by inserting colloquialisms and idioms where none existed in the original.",
-      "It produces stiff, unnatural prose that sounds like a word-for-word gloss.",
-      "It omits the main message of the source text.",
-      "It is incomprehensible to native speakers of the target language."
+      "Correct and improve the text so it reads clearly in the target language",
+      "Keep all grammatical mistakes to show the author's weakness",
+      "Refuse to translate the document",
+      "Translate every word literally without editing"
     ],
     answer: 0
   },
 
-  // --- SESSION 3: LANGUAGE VARIATION & TRANSLATION STRATEGIES ---
+  // --- PART 2: TRANSLATION METHODS & PRACTICAL STRATEGIES ---
   {
-    q: "Which linguistic concept explains why two people from the exact same city and social class still speak in a uniquely recognizable personal manner?",
+    q: "Which translation method focuses primarily on the message and the target reader, making the text smoother and easier to read?",
+    options: [
+      "Communicative translation",
+      "Word-for-word translation",
+      "Literal translation",
+      "Semantic translation"
+    ],
+    answer: 0
+  },
+  {
+    q: "Which translation method stresses the author's exact meaning and is best used for high literature, drama, and autobiographies?",
+    options: [
+      "Semantic translation",
+      "Communicative translation",
+      "Adaptation",
+      "Free translation"
+    ],
+    answer: 0
+  },
+  {
+    q: "Which method is considered the 'freest' form of translation, mainly used for plays and poetry where the SL culture is converted to the TL culture?",
+    options: [
+      "Adaptation",
+      "Word-for-word translation",
+      "Literal translation",
+      "Faithful translation"
+    ],
+    answer: 0
+  },
+  {
+    q: "In which translation method is the SL word order preserved and words are translated singly by their most common meanings out of context?",
+    options: [
+      "Word-for-word translation",
+      "Communicative translation",
+      "Idiomatic translation",
+      "Adaptation"
+    ],
+    answer: 0
+  },
+  {
+    q: "What is a person's individual, personal way of speaking (depending on age, education, and mood) called?",
     options: [
       "Idiolect",
-      "Regional dialect",
-      "Occupational jargon",
-      "Syntactic inversion"
+      "Dialect",
+      "Jargon",
+      "Slang"
     ],
     answer: 0
   },
   {
-    q: "What is the practical sociolinguistic rule of thumb used to distinguish two dialects of the same language from two separate languages?",
+    q: "What are regional variations of a language (such as Australian English and US English) called?",
     options: [
-      "Mutual unintelligibility—when speakers of one group can no longer understand speakers of the other.",
-      "Whether the two varieties are spoken across an international border.",
-      "Whether each variety possesses its own official dictionary.",
-      "The percentage of shared Latin or Greek loanwords."
+      "Dialects",
+      "Idiolects",
+      "Jargon",
+      "Idioms"
     ],
     answer: 0
   },
   {
-    q: "Translating the English verb 'carry' into Vietnamese as 'bế', 'vác', 'xách', or 'khiêng' depending on the object's size, animacy, and manner of holding exemplifies:",
+    q: "Specialized vocabulary used by a specific profession (such as doctors or lawyers) is called:",
+    options: [
+      "Jargon",
+      "Slang",
+      "Dialect",
+      "Idiolect"
+    ],
+    answer: 0
+  },
+  {
+    q: "Phrases whose overall meaning cannot be guessed from the individual words (e.g., 'to bite one's tongue') are called:",
+    options: [
+      "Idioms",
+      "Jargon",
+      "Synonyms",
+      "Acronyms"
+    ],
+    answer: 0
+  },
+  {
+    q: "Translating the English word 'rice' into Vietnamese as 'lúa', 'gạo', or 'cơm' depending on the context uses which strategy?",
     options: [
       "Translation by a more specific word",
       "Translation by a more general word",
-      "Translation by cultural substitution",
-      "Translation by omission"
+      "Translation by omission",
+      "Translation using a loan word"
     ],
     answer: 0
   },
   {
-    q: "In a community development manual, translating 'matrix' as 'bảng' instead of the mathematical term 'ma trận' demonstrates which strategy?",
+    q: "Translating English 'mopeds, scooters, and motorcycles' all into Vietnamese as 'xe máy' uses which strategy?",
     options: [
-      "Translation by a more general word to avoid misleading technical connotations",
+      "Translation by a more general word",
+      "Translation by a more specific word",
+      "Translation by cultural substitution",
+      "Translation by paraphrase"
+    ],
+    answer: 0
+  },
+  {
+    q: "Translating 'ORS' into Vietnamese as 'ORS (muối bù mất nước)' is an example of:",
+    options: [
       "Translation using a loan word plus explanation",
+      "Translation by omission",
       "Translation by cultural substitution",
-      "Word-for-word literal equivalence"
+      "Word-for-word translation"
     ],
     answer: 0
   },
   {
-    q: "Why do many Vietnamese translators hesitate to use 'Translation by cultural substitution' (e.g., adapting unfamiliar foreign tree species in an agricultural manual)?",
+    q: "Translating 'Much can be done even without being physically present' as 'Nhiều việc có thể làm ngay cả khi không có mặt' applies which strategy?",
     options: [
-      "Out of perceived 'respect' for the original text, leading them to translate directly even when it becomes impractical for local readers.",
-      "Because Vietnamese grammar lacks words for local flora and fauna.",
-      "Because international copyright law forbids changing examples in educational manuals.",
-      "Because cultural substitution always lengthens the text by more than fifty percent."
+      "Translation by omission (dropping the non-essential word 'physically')",
+      "Translation using a loan word",
+      "Translation by cultural substitution",
+      "Literal word-for-word translation"
     ],
     answer: 0
   },
   {
-    q: "In the sentence 'Pregnant women should avoid alcohol', translating 'alcohol' simply as 'rượu' in Vietnamese is inaccurate because:",
+    q: "Translating the English idiom 'to fight like cats and dogs' into Vietnamese as 'cãi nhau như chó với mèo' uses which strategy?",
     options: [
-      "The Vietnamese term 'rượu' excludes beer, requiring paraphrase ('rượu, bia') to capture the full semantic scope of the English word.",
-      "'Rượu' is a slang term unsuitable for medical guidelines.",
-      "Vietnamese grammar does not allow mass nouns after modal verbs.",
-      "The English word 'alcohol' refers exclusively to industrial ethanol."
+      "Using an idiom of similar meaning and form",
+      "Using an idiom of similar meaning but dissimilar form",
+      "Translation by omission",
+      "Translation using a loan word"
     ],
     answer: 0
   },
   {
-    q: "When is 'Translation by omission' considered professionally acceptable in English-to-Vietnamese translation?",
+    q: "Translating the English idiom 'to carry coals to Newcastle' into Vietnamese as 'chở củi về rừng' uses which strategy?",
     options: [
-      "When a word or modifier (such as 'physically' in 'physically present') adds minimal semantic weight and would sound awkward or distracting if forced into Vietnamese.",
-      "Whenever the translator encounters an unfamiliar technical term not listed in a pocket dictionary.",
-      "When shortening a legal contract to fit onto a single printed page.",
-      "Whenever a sentence contains passive voice constructions."
+      "Using an idiom of similar meaning but dissimilar form",
+      "Using an idiom of similar meaning and form",
+      "Translation by omission",
+      "Literal translation"
     ],
     answer: 0
   },
   {
-    q: "Why are idioms particularly treacherous for inexperienced translators?",
+    q: "Which Vietnamese translation best captures the positive passive meaning of 'Tom has been promoted recently'?",
     options: [
-      "Many idioms appear to make literal sense on the surface, causing translators to miss their figurative meaning entirely.",
-      "Idioms always consist of obsolete words no longer found in modern dictionaries.",
-      "Idioms are grammatically illegal in formal written English.",
-      "Every English idiom has an exact word-for-word counterpart in Vietnamese."
+      "Tom mới được đề bạt gần đây.",
+      "Tom mới bị đề bạt gần đây.",
+      "Tom tự đề bạt gần đây.",
+      "Tom đang xin đề bạt gần đây."
     ],
     answer: 0
   },
   {
-    q: "Rendering 'to carry coals to Newcastle' as 'chở củi về rừng' preserves the communicative impact of the original by:",
+    q: "How is the English business/administrative title 'Ministry of Planning and Investment' translated into Vietnamese?",
     options: [
-      "Using a target-language idiom of similar meaning but dissimilar cultural form.",
-      "Using a target-language idiom of identical lexical form and meaning.",
-      "Providing a historical footnote explaining England's coal-mining industry.",
-      "Omitting the idiomatic comparison completely."
+      "Bộ Kế hoạch và Đầu tư",
+      "Sở Kế hoạch và Đầu tư",
+      "Tổng công ty Kế hoạch và Đầu tư",
+      "Văn phòng Kế hoạch và Đầu tư"
     ],
     answer: 0
   },
+
+  // --- PART 3: CONSECUTIVE & LIAISON INTERPRETING ---
   {
-    q: "In the English sentence 'The children were given injections', why does translating the passive voice into Vietnamese pose a pragmatic challenge?",
+    q: "In which mode of interpreting does the interpreter wait until the speaker finishes a segment or speech before rendering it into the target language?",
     options: [
-      "English passive syntax is neutral, whereas Vietnamese forces the translator to choose between positive ('được tiêm') and negative ('bị tiêm') connotations.",
-      "Vietnamese lacks any grammatical mechanism to express passive events.",
-      "The word 'children' cannot serve as the grammatical subject in Vietnamese.",
-      "Medical procedures in Vietnamese must always be translated in the future tense."
+      "Consecutive interpreting (Dịch đuổi)",
+      "Simultaneous interpreting (Dịch song song)",
+      "Whispered interpreting (Dịch thầm)",
+      "Electronic booth interpreting (Dịch cabin)"
     ],
     answer: 0
   },
   {
-    q: "Which Vietnamese plural marker conveys BOTH the individuality of each item AND the totality of the entire category?",
+    q: "In which mode of interpreting does the interpreter speak at the same time as the speaker, usually inside a soundproof booth with headsets?",
     options: [
-      "Mọi",
-      "Mỗi",
-      "Những",
-      "Vài"
+      "Simultaneous interpreting",
+      "Consecutive interpreting",
+      "Liaison interpreting",
+      "Escort interpreting"
     ],
     answer: 0
   },
   {
-    q: "Which of the following English nouns is uncountable (requiring no plural '-s') even though its Vietnamese equivalent can be counted directly?",
+    q: "What is 'Liaison interpreting' (dịch hội thoại / dịch tháp tùng)?",
+    options: [
+      "Two-way interpreting between two parties (e.g., a foreign investor and a Vietnamese partner) in a dialogue",
+      "Translating written business contracts at home",
+      "One-way simultaneous interpreting at a United Nations summit",
+      "Subtitling corporate training videos"
+    ],
+    answer: 0
+  },
+  {
+    q: "What is 'Sight translation'?",
+    options: [
+      "Reading a written source document aloud directly in the target language",
+      "Translating a speech after listening to an audio tape",
+      "Writing a summary of a meeting in English",
+      "Interpreting over the telephone without seeing the speaker"
+    ],
+    answer: 0
+  },
+  {
+    q: "What is the main advantage of simultaneous interpreting at large international conferences?",
+    options: [
+      "It saves a great deal of time and does not interrupt the speaker's flow.",
+      "It requires no electronic equipment or headsets.",
+      "It allows the interpreter unlimited time to check dictionaries.",
+      "It is much cheaper than consecutive interpreting."
+    ],
+    answer: 0
+  },
+  {
+    q: "In the Interpreting Process diagram (I → U → D → T → C+C → O), which stage is considered the MOST important?",
+    options: [
+      "U (Understanding — because not understanding causes a breakdown in communication)",
+      "I (Input — writing down the speaker's biography)",
+      "O (Output — speaking as fast as possible)",
+      "P (Printing — formatting the transcript)"
+    ],
+    answer: 0
+  },
+  {
+    q: "In the Interpreting Process, what does 'C + C' stand for?",
+    options: [
+      "Context and Culture",
+      "Copy and Check",
+      "Client and Commissioner",
+      "Clarity and Confidence"
+    ],
+    answer: 0
+  },
+  {
+    q: "When should a consecutive interpreter begin taking notes?",
+    options: [
+      "As soon as one of the parties begins speaking",
+      "Only after the speaker has completely finished talking",
+      "Ten minutes before the meeting starts",
+      "Never, because notes are prohibited in consecutive interpreting"
+    ],
+    answer: 0
+  },
+  {
+    q: "What is the proper role of notes during consecutive interpreting?",
+    options: [
+      "To serve as a memory backup for key points without distracting from listening",
+      "To record every single word spoken verbatim like a court reporter",
+      "To replace the need for short-term memory completely",
+      "To be handed over to the client as official meeting minutes"
+    ],
+    answer: 0
+  },
+  {
+    q: "In interpreter note-taking shorthand, how is a large figure like '25,000' normally written to save time?",
+    options: [
+      "25k",
+      "25m",
+      "25b",
+      "25.000,00"
+    ],
+    answer: 0
+  },
+  {
+    q: "In interpreter note-taking symbols, what does an upward arrow (↗) typically represent?",
+    options: [
+      "Increase, rise, progress, or improvement",
+      "Decline, fall, or decrease",
+      "Import or receive from",
+      "Resumed normal course of action"
+    ],
+    answer: 0
+  },
+  {
+    q: "Why should an interpreter avoid mumbling, stuttering, or speaking too quickly during delivery?",
+    options: [
+      "Because clear public speaking and a well-modulated voice ensure the audience understands the message accurately",
+      "Because speaking slowly doubles the interpreter's hourly fee",
+      "Because microphones cannot pick up fast speech",
+      "Because clients prefer silent written notes"
+    ],
+    answer: 0
+  },
+
+  // --- PART 4: ETHICS & PROFESSIONAL CONDUCT IN BUSINESS/OFFICE SETTINGS ---
+  {
+    q: "What is the ideal seating arrangement for a three-way liaison interpreting meeting (e.g., manager, client, and interpreter)?",
+    options: [
+      "A triangle with participants at equal distances so eye contact can be maintained at all times",
+      "The interpreter sits behind a screen out of sight",
+      "The manager and client sit back-to-back",
+      "The interpreter sits at the head of the table while the client stands"
+    ],
+    answer: 0
+  },
+  {
+    q: "Which grammatical person should a professional interpreter use during a face-to-face business or office interview?",
+    options: [
+      "First-person interpreting ('I') — speaking directly as the speaker",
+      "Third-person reporting ('He says that...')",
+      "Passive voice only",
+      "First-person plural ('We') for every sentence"
+    ],
+    answer: 0
+  },
+  {
+    q: "What must an interpreter do if they do not understand a technical term or business jargon used during a meeting?",
+    options: [
+      "Ask the speaker for clarification immediately to ensure accuracy",
+      "Guess the meaning silently so the speaker does not lose confidence",
+      "Skip the sentence completely without telling anyone",
+      "Make up a similar-sounding Vietnamese word"
+    ],
+    answer: 0
+  },
+  {
+    q: "According to the Code of Ethics, how must an interpreter handle confidential company or client information after an assignment?",
+    options: [
+      "Keep all knowledge and information strictly confidential and never pass it on",
+      "Share interesting business deals with friends and classmates",
+      "Post a summary of the meeting on social media",
+      "Sell the company's price list to a competitor"
+    ],
+    answer: 0
+  },
+  {
+    q: "What is the ethical rule regarding accepting gifts from clients after an interpreting assignment?",
+    options: [
+      "No acceptance of gifts and no personal involvement",
+      "Accept expensive gifts to maintain good business relations",
+      "Ask the client for a tip before translating the final contract",
+      "Accept gifts only if the meeting lasted over two hours"
+    ],
+    answer: 0
+  },
+  {
+    q: "What attire is expected of an interpreter working in formal business meetings?",
+    options: [
+      "Formal business clothes (such as a suit, jacket, tie, and clean shoes)",
+      "Casual t-shirt and jeans to create a relaxed atmosphere",
+      "Sportswear and sneakers",
+      "Any outfit, as appearance does not matter in business"
+    ],
+    answer: 0
+  },
+  {
+    q: "If a client asks the interpreter for personal advice during a meeting (e.g., 'Do you think I should sign this contract?'), how should the interpreter respond?",
+    options: [
+      "Remain impartial and explain that the interpreter's role is only to interpret, not to give personal advice",
+      "Tell the client to sign immediately so the meeting can end early",
+      "Advise the client to reject the offer and find another partner",
+      "Negotiate a better price on the client's behalf"
+    ],
+    answer: 0
+  },
+  {
+    q: "During an interpreting assignment, what are the three core linguistic standards required by the Code of Ethics?",
+    options: [
+      "No omissions, no alterations, and no additions",
+      "Shortening long speeches, adding jokes, and changing examples",
+      "Translating only the main conclusion and skipping details",
+      "Polishing rude remarks into polite compliments"
+    ],
+    answer: 0
+  }
+];
+
+// =========================================================================
+// 3. FISHER-YATES RANDOMIZATION (SHUFFLES BOTH QUESTIONS & OPTIONS PER LOGIN)
+// =========================================================================
+function shuffleArray(arr) {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function buildRandomizedExam() {
+  const shuffledQuestions = shuffleArray(RAW_QUESTION_BANK);
+  return shuffledQuestions.map((item) => {
+    const correctText = item.options[item.answer];
+    const shuffledOptions = shuffleArray(item.options);
+    const newAnswerIndex = shuffledOptions.indexOf(correctText);
+    return {
+      q: item.q,
+      options: shuffledOptions,
+      answer: newAnswerIndex
+    };
+  });
+}
+
+// =========================================================================
+// 4. EXAM STATE & MULTI-DEVICE SESSION LOCK
+// =========================================================================
+let ACTIVE_EXAM = [];
+let studentName = "";
+let studentMshv = "";
+let currentIdx = 0;
+let userAnswers = [];
+let flaggedQuestions = [];
+let remainingSeconds = EXAM_DURATION_SECONDS;
+let timerInterval = null;
+let isExamActive = false;
+let isSubmitting = false;
+
+function checkLocalCooldown(mshv) {
+  const key = `ITEST_ENG1373_LOCK_${mshv}`;
+  const lastTime = localStorage.getItem(key);
+  if (lastTime) {
+    const elapsed = Date.now() - Number(lastTime);
+    const cooldownMs = COOLDOWN_HOURS * 60 * 60 * 1000;
+    if (elapsed < cooldownMs) {
+      const remMins = Math.ceil((cooldownMs - elapsed) / 60000);
+      const h = Math.floor(remMins / 60);
+      const m = remMins % 60;
+      return `Access Denied: Student ID ${mshv} already has an active or completed record on this device. Re-entry is locked for ${h}h ${m}m.`;
+    }
+  }
+  return null;
+}
+
+document.getElementById("login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const nameVal = document.getElementById("input-name").value.trim();
+  const mshvVal = document.getElementById("input-mshv").value.trim().toUpperCase();
+  const errBox = document.getElementById("login-error");
+  const btnStart = document.getElementById("btn-start");
+
+  if (!nameVal || !mshvVal) return;
+
+  errBox.classList.add("hidden");
+  btnStart.disabled = true;
+  btnStart.textContent = "Verifying credentials...";
+
+  const localMsg = checkLocalCooldown(mshvVal);
+  if (localMsg) {
+    errBox.textContent = localMsg;
+    errBox.classList.remove("hidden");
+    btnStart.disabled = false;
+    btnStart.textContent = "Start Midterm Exam";
+    return;
+  }
+
+  if (SCRIPT_URL.startsWith("https://")) {
+    try {
+      const params = new URLSearchParams({
+        mshv: mshvVal,
+        fullName: nameVal,
+        deviceToken: getDeviceToken()
+      });
+      const res = await fetch(`${SCRIPT_URL}?${params.toString()}`, {
+        method: "GET",
+        redirect: "follow"
+      });
+      const data = await res.json();
+      if (data.allowed === false) {
+        errBox.textContent = data.message;
+        errBox.classList.remove("hidden");
+        btnStart.disabled = false;
+        btnStart.textContent = "Start Midterm Exam";
+        return;
+      }
+    } catch (err) {
+      errBox.textContent = "Connection Error: Unable to reach the examination server. Please verify your network and try again.";
+      errBox.classList.remove("hidden");
+      btnStart.disabled = false;
+      btnStart.textContent = "Start Midterm Exam";
+      return;
+    }
+  }
+
+  localStorage.setItem(`ITEST_ENG1373_LOCK_${mshvVal}`, String(Date.now()));
+
+  studentName = nameVal;
+  studentMshv = mshvVal;
+  ACTIVE_EXAM = buildRandomizedExam();
+  userAnswers = new Array(ACTIVE_EXAM.length).fill(null);
+  flaggedQuestions = new Array(ACTIVE_EXAM.length).fill(false);
+
+  startExam();
+});
+
+function startExam() {
+  isExamActive = true;
+  document.getElementById("login-screen").classList.add("hidden");
+  document.getElementById("exam-screen").classList.remove("hidden");
+  document.getElementById("hud-candidate").classList.remove("hidden");
+
+  document.getElementById("hud-name").textContent = studentName;
+  document.getElementById("hud-mshv").textContent = studentMshv;
+
+  try {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+  } catch (e) {}
+
+  renderGrid();
+  renderQuestion(0);
+  startTimer();
+  activateAntiCheat();
+}
+
+// =========================================================================
+// 5. ANTI-CHEAT: FOCUS & VISIBILITY MONITORING
+// =========================================================================
+function activateAntiCheat() {
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && isExamActive && !isSubmitting) {
+      submitExam("Auto-Submitted (Tab or App Switch Detected)");
+    }
+  });
+
+  window.addEventListener("blur", () => {
+    if (isExamActive && !isSubmitting) {
+      submitExam("Auto-Submitted (Window Focus Lost)");
+    }
+  });
+
+  document.addEventListener("contextmenu", (e) => isExamActive && e.preventDefault());
+  document.addEventListener("keydown", (e) => {
+    if (!isExamActive) return;
+    if (e.key === "F12" || (e.ctrlKey && ["c", "u", "s", "p"].includes(e.key.toLowerCase()))) {
+      e.preventDefault();
+    }
+  });
+}
+
+// =========================================================================
+// 6. TIMER & QUESTION NAVIGATION
+// =========================================================================
+function startTimer() {
+  timerInterval = setInterval(() => {
+    remainingSeconds--;
+    const mins = String(Math.floor(remainingSeconds / 60)).padStart(2, "0");
+    const secs = String(remainingSeconds % 60).padStart(2, "0");
+    const display = document.getElementById("timer-display");
+    display.textContent = `${mins}:${secs}`;
+
+    if (remainingSeconds <= 300) {
+      display.classList.add("warning");
+    }
+
+    if (remainingSeconds <= 0) {
+      clearInterval(timerInterval);
+      submitExam("Time Expired (Auto-Submitted)");
+    }
+  }, 1000);
+}
+
+function renderGrid() {
+  const grid = document.getElementById("question-grid");
+  grid.innerHTML = "";
+  ACTIVE_EXAM.forEach((_, idx) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = idx + 1;
+    btn.id = `nav-btn-${idx}`;
+    btn.className = "grid-btn";
+    btn.onclick = () => renderQuestion(idx);
+    grid.appendChild(btn);
+  });
+}
+
+function updateGridStates() {
+  let answered = 0;
+  ACTIVE_EXAM.forEach((_, idx) => {
+    const btn = document.getElementById(`nav-btn-${idx}`);
+    btn.classList.remove("answered", "flagged", "current");
+    if (userAnswers[idx] !== null) {
+      btn.classList.add("answered");
+      answered++;
+    }
+    if (flaggedQuestions[idx]) btn.classList.add("flagged");
+    if (idx === currentIdx) btn.classList.add("current");
+  });
+  document.getElementById("answered-count").textContent = answered;
+}
+
+function renderQuestion(idx) {
+  currentIdx = idx;
+  const item = ACTIVE_EXAM[idx];
+  document.getElementById("q-number").textContent = idx + 1;
+  document.getElementById("q-text").textContent = item.q;
+
+  const flagBtn = document.getElementById("btn-flag");
+  flagBtn.textContent = flaggedQuestions[idx] ? "Flagged" : "Flag Question";
+  flagBtn.classList.toggle("active", flaggedQuestions[idx]);
+
+  const optContainer = document.getElementById("q-options");
+  optContainer.innerHTML = "";
+  const letters = ["A", "B", "C", "D"];
+
+  item.options.forEach((optText, optIdx) => {
+    const isSelected = userAnswers[idx] === optIdx;
+    const label = document.createElement("label");
+    label.className = `option-item ${isSelected ? "selected" : ""}`;
+    label.innerHTML = `
+      <input type="radio" name="q_opt" ${isSelected ? "checked" : ""} />
+      <span class="opt-letter">${letters[optIdx]}.</span>
+      <span>${optText}</span>
+    `;
+    label.onclick = () => {
+      userAnswers[idx] = optIdx;
+      renderQuestion(idx);
+    };
+    optContainer.appendChild(label);
+  });
+
+  document.getElementById("btn-prev").disabled = idx === 0;
+  document.getElementById("btn-next").disabled = idx === ACTIVE_EXAM.length - 1;
+  updateGridStates();
+}
+
+function navigateQuestion(delta) {
+  const next = currentIdx + delta;
+  if (next >= 0 && next < ACTIVE_EXAM.length) {
+    renderQuestion(next);
+  }
+}
+
+function toggleFlag() {
+  flaggedQuestions[currentIdx] = !flaggedQuestions[currentIdx];
+  renderQuestion(currentIdx);
+}
+
+function confirmManualSubmit() {
+  const unanswered = userAnswers.filter((a) => a === null).length;
+  isExamActive = false;
+  const ok = confirm(
+    unanswered > 0
+      ? `You have ${unanswered} unanswered question(s). Confirm final submission?`
+      : "All 50 questions answered. Confirm final submission?"
+  );
+  if (ok) {
+    submitExam("Submitted by Candidate");
+  } else {
+    isExamActive = true;
+  }
+}
+
+// =========================================================================
+// 7. GRADING & GOOGLE SHEETS LOGGING
+// =========================================================================
+async function submitExam(statusReason) {
+  if (isSubmitting) return;
+  isSubmitting = true;
+  isExamActive = false;
+  clearInterval(timerInterval);
+
+  if (document.fullscreenElement) {
+    document.exitFullscreen().catch(() => {});
+  }
+
+  let correctCount = 0;
+  ACTIVE_EXAM.forEach((item, idx) => {
+    if (userAnswers[idx] === item.answer) correctCount++;
+  });
+  const wrongCount = ACTIVE_EXAM.length - correctCount;
+  const score10 = ((correctCount / ACTIVE_EXAM.length) * 10).toFixed(2);
+
+  localStorage.setItem(`ITEST_ENG1373_LOCK_${studentMshv}`, String(Date.now()));
+
+  document.getElementById("exam-screen").classList.add("hidden");
+  document.getElementById("result-screen").classList.remove("hidden");
+
+  const banner = document.getElementById("submit-status-banner");
+  const isViolation = statusReason.includes("Detected") || statusReason.includes("Lost");
+  banner.className = `status-msg ${isViolation ? "status-warn" : "status-ok"}`;
+  banner.textContent = `Status: ${statusReason}`;
+
+  document.getElementById("res-name").textContent = studentName;
+  document.getElementById("res-mshv").textContent = studentMshv;
+  document.getElementById("res-time").textContent = new Date().toLocaleString("en-GB");
+  document.getElementById("res-correct").textContent = `${correctCount} / 50`;
+  document.getElementById("res-wrong").textContent = `${wrongCount} / 50`;
+  document.getElementById("res-score").textContent = `${score10} / 10.00`;
+
+  const syncNote = document.getElementById("sync-note");
+  if (SCRIPT_URL.startsWith("https://")) {
+    try {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({
+          action: "submit",
+          mshv: studentMshv,
+          fullName: studentName,
+          correct: correctCount,
+          wrong: wrongCount,
+          score: score10,
+          status: statusReason
+        })
+      });
+      syncNote.textContent = "Result successfully recorded on the examination server.";
+    } catch (err) {
+      syncNote.textContent = "Network warning: Unable to confirm server sync. Retain a screenshot of this summary.";
+    }
+  }
+}
+</script>
+</body>
+</html>
