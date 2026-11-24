@@ -467,7 +467,7 @@ function getDeviceToken() {
 }
 
 // =========================================================================
-// 2. MIDTERM QUESTION BANK (50 QUESTIONS - VB2 BUSINESS & OFFICE ENGLISH)
+// 2. MIDTERM QUESTION BANK (50 ITEMS: 45 CORE + 5 DIFFERENTIATING)
 // =========================================================================
 const RAW_QUESTION_BANK = [
   // --- PART 1: BASIC CONCEPTS OF TRANSLATION & INTERPRETING ---
@@ -602,12 +602,12 @@ const RAW_QUESTION_BANK = [
     answer: 0
   },
   {
-    q: "If a source text is badly written with poor structure and redundant phrases, what should the translator do?",
+    q: "A company asks you to translate a foreign competitor's brochure just so the manager can see how they structure their slogans, NOT to publish it for local buyers. How does this affect your translation intention?",
     options: [
-      "Correct and improve the text so it reads clearly in the target language",
-      "Keep all grammatical mistakes to show the author's weakness",
-      "Refuse to translate the document",
-      "Translate every word literally without editing"
+      "Your intention diverges from the original author's: you focus on showing how the SL text is formulated rather than persuading TL readers.",
+      "Your intention remains identical: you must rewrite all slogans into Vietnamese idioms to boost local sales.",
+      "You should omit all product specifications and only summarize the company's history.",
+      "You must translate the brochure word-for-word without explaining any cultural references."
     ],
     answer: 0
   },
@@ -754,22 +754,22 @@ const RAW_QUESTION_BANK = [
     answer: 0
   },
   {
-    q: "Which Vietnamese translation best captures the positive passive meaning of 'Tom has been promoted recently'?",
+    q: "In a workplace health notice: 'Pregnant women should avoid alcohol', translating 'alcohol' simply as 'rượu' in Vietnamese is insufficient. Which strategy solves this?",
     options: [
-      "Tom mới được đề bạt gần đây.",
-      "Tom mới bị đề bạt gần đây.",
-      "Tom tự đề bạt gần đây.",
-      "Tom đang xin đề bạt gần đây."
+      "Translation by paraphrase ('rượu, bia') because the Vietnamese word 'rượu' does not include beer in its definition.",
+      "Translation by omission (dropping the word 'alcohol' to keep the sentence short).",
+      "Translation using a loan word ('alcohol') without any Vietnamese explanation.",
+      "Translation by a more specific word ('rượu vang đỏ') to sound more formal."
     ],
     answer: 0
   },
   {
-    q: "How is the English business/administrative title 'Ministry of Planning and Investment' translated into Vietnamese?",
+    q: "Compare the two Vietnamese sentences: 'Các cháu được tiêm' and 'Các cháu bị tiêm' for 'The children were given injections'. What determines the translator's choice?",
     options: [
-      "Bộ Kế hoạch và Đầu tư",
-      "Sở Kế hoạch và Đầu tư",
-      "Tổng công ty Kế hoạch và Đầu tư",
-      "Văn phòng Kế hoạch và Đầu tư"
+      "Whether receiving injections is viewed as a positive/beneficial experience ('được') or a negative/painful one ('bị') in that context.",
+      "Whether the sentence is in the past tense ('được') or the future tense ('bị').",
+      "Whether the children are boys ('được') or girls ('bị').",
+      "Whether the injection was given by a doctor ('được') or a nurse ('bị')."
     ],
     answer: 0
   },
@@ -886,17 +886,17 @@ const RAW_QUESTION_BANK = [
     answer: 0
   },
   {
-    q: "Why should an interpreter avoid mumbling, stuttering, or speaking too quickly during delivery?",
+    q: "During a business negotiation, you hear a rapid sentence with unfamiliar technical jargon while taking notes. According to the Interpreting Process (I → U → D → T → C+C → O), what is the right action?",
     options: [
-      "Because clear public speaking and a well-modulated voice ensure the audience understands the message accurately",
-      "Because speaking slowly doubles the interpreter's hourly fee",
-      "Because microphones cannot pick up fast speech",
-      "Because clients prefer silent written notes"
+      "Pause briefly and ask the speaker for clarification before transferring, because failure at the Understanding (U) stage causes communication breakdown.",
+      "Keep writing down every word phonetically and guess the meaning during Output (O) so the speaker is not interrupted.",
+      "Skip the technical term completely and summarize the rest of the meeting in your own words.",
+      "Switch immediately to third-person reporting ('He is using a difficult word...') and move on."
     ],
     answer: 0
   },
 
-  // --- PART 4: ETHICS & PROFESSIONAL CONDUCT IN BUSINESS/OFFICE SETTINGS ---
+  // --- PART 4: PROFESSIONAL ETHICS & BUSINESS/OFFICE CONDUCT ---
   {
     q: "What is the ideal seating arrangement for a three-way liaison interpreting meeting (e.g., manager, client, and interpreter)?",
     options: [
@@ -968,12 +968,12 @@ const RAW_QUESTION_BANK = [
     answer: 0
   },
   {
-    q: "During an interpreting assignment, what are the three core linguistic standards required by the Code of Ethics?",
+    q: "In a contract meeting, a foreign investor says something culturally blunt that might offend the Vietnamese partner, while the partner privately asks your opinion on the deal. How do you handle both?",
     options: [
-      "No omissions, no alterations, and no additions",
-      "Shortening long speeches, adding jokes, and changing examples",
-      "Translating only the main conclusion and skipping details",
-      "Polishing rude remarks into polite compliments"
+      "Interpret accurately without distortion while briefly clarifying the cultural difference, and politely decline to give personal advice to remain impartial.",
+      "Soften the investor's blunt remark on your own and advise the Vietnamese partner to demand a higher price.",
+      "Translate word-for-word with an angry tone and tell the partner privately that the investor seems untrustworthy.",
+      "Omit the blunt remark completely and suggest a compromise clause between the two parties."
     ],
     answer: 0
   }
@@ -1006,7 +1006,39 @@ function buildRandomizedExam() {
 }
 
 // =========================================================================
-// 4. EXAM STATE & MULTI-DEVICE SESSION LOCK
+// 4. JSONP HELPER (BYPASSES GOOGLE APPS SCRIPT CORS REDIRECTS)
+// =========================================================================
+function callAppsScriptJsonp(url, paramsObj) {
+  return new Promise((resolve, reject) => {
+    const cbName = "itest_jsonp_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+    const script = document.createElement("script");
+    const timer = setTimeout(() => {
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+      reject(new Error("Request timeout"));
+    }, 15000);
+
+    window[cbName] = (response) => {
+      clearTimeout(timer);
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+      resolve(response);
+    };
+
+    const query = new URLSearchParams({ ...paramsObj, callback: cbName });
+    script.src = `${url}?${query.toString()}`;
+    script.onerror = () => {
+      clearTimeout(timer);
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+      reject(new Error("Script load error"));
+    };
+    document.body.appendChild(script);
+  });
+}
+
+// =========================================================================
+// 5. EXAM STATE & MULTI-DEVICE SESSION LOCK
 // =========================================================================
 let ACTIVE_EXAM = [];
 let studentName = "";
@@ -1059,17 +1091,13 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
 
   if (SCRIPT_URL.startsWith("https://")) {
     try {
-      const params = new URLSearchParams({
+      const data = await callAppsScriptJsonp(SCRIPT_URL, {
         mshv: mshvVal,
         fullName: nameVal,
         deviceToken: getDeviceToken()
       });
-      const res = await fetch(`${SCRIPT_URL}?${params.toString()}`, {
-        method: "GET",
-        redirect: "follow"
-      });
-      const data = await res.json();
-      if (data.allowed === false) {
+
+      if (data && data.allowed === false) {
         errBox.textContent = data.message;
         errBox.classList.remove("hidden");
         btnStart.disabled = false;
@@ -1077,7 +1105,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
         return;
       }
     } catch (err) {
-      errBox.textContent = "Connection Error: Unable to reach the examination server. Please verify your network and try again.";
+      errBox.textContent = "Connection Error: Unable to reach the examination server. Please verify your internet connection and try again.";
       errBox.classList.remove("hidden");
       btnStart.disabled = false;
       btnStart.textContent = "Start Midterm Exam";
@@ -1118,7 +1146,7 @@ function startExam() {
 }
 
 // =========================================================================
-// 5. ANTI-CHEAT: FOCUS & VISIBILITY MONITORING
+// 6. ANTI-CHEAT: FOCUS & VISIBILITY MONITORING
 // =========================================================================
 function activateAntiCheat() {
   document.addEventListener("visibilitychange", () => {
@@ -1143,7 +1171,7 @@ function activateAntiCheat() {
 }
 
 // =========================================================================
-// 6. TIMER & QUESTION NAVIGATION
+// 7. TIMER & QUESTION NAVIGATION
 // =========================================================================
 function startTimer() {
   timerInterval = setInterval(() => {
@@ -1256,7 +1284,7 @@ function confirmManualSubmit() {
 }
 
 // =========================================================================
-// 7. GRADING & GOOGLE SHEETS LOGGING
+// 8. GRADING & GOOGLE SHEETS LOGGING
 // =========================================================================
 async function submitExam(statusReason) {
   if (isSubmitting) return;
